@@ -7,7 +7,7 @@ class Controller {
 
     async signUp({ body }, res) {
         try {
-            let result = localSignUp(body);
+            let result = await localSignUp(body);
             return res.status(200).json(result);
         } catch (error) {
             res.status(400).json(error.message);
@@ -16,7 +16,7 @@ class Controller {
 
     async signIn({ body }, res) {
         try {
-            let result = localSignIn(body.email, body.password);
+            let result = await localSignIn(body.email, body.password)
             return res.status(200).json(result);
         } catch (error) {
             res.status(400).json(error.message);

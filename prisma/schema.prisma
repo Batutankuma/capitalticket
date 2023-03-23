@@ -13,10 +13,8 @@ datasource db {
 //Utilisateurs
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
+  fullname  String
   //l'attribut avatar est optionnelle, l'utilisateur peut mette ou pas sa photo de profil
-  avatar    String?
-  lastname  String
   email     String   @unique
   password  String
   create_at DateTime @default(now())
