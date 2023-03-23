@@ -45,7 +45,7 @@ model Billets {
   utilisateur    Utilisateurs @relation(fields: [utilisateursId], references: [id])
   trajet         Trajets      @relation(fields: [trajetsId], references: [id])
   //l'attibut isCancel permet de voir si le billet est valide ou pas, par default il est true c'est-à-dire valider
-  iscancel       Boolean      @default(true)
+  iscancel       Boolean      @default(false)
   datecancel     DateTime?
   create_at      DateTime     @default(now())
   utilisateursId String

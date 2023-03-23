@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const { PrismaClient } = require('@prisma/client');
 
-const indexRouter = require('./routes/index');
+const billetRouter = require('./routes/billets');
 const usersRouter = require('./routes/users');
 const trajetRouter = require('./routes/trajet');
 
@@ -30,8 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/api/v1', usersRouter,trajetRouter);
+app.use('/api/v1', usersRouter,trajetRouter,billetRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
