@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+//Utilisateurs
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  //l'attribut avatar est optionnelle, l'utilisateur peut mette ou pas sa photo de profil
+  avatar    String?
+  lastname  String
+  email     String   @unique
+  password  String
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+  Ticker    Ticker[]
+}
+
+//Trajet
+model Route {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  departure     String
+  arrived       String
+  datedeparture DateTime
+  datearrived   DateTime
+  //ici nous determinons le nombre de siege par rapport à un trajet
+  seat          Int
+  create_at     DateTime @default(now())
+  update_at     DateTime @updatedAt
+  Ticker        Ticker[]
+}
+
+//Billet
+model Ticker {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  router     Route     @relation(fields: [routeId], references: [id])
+  //l'attibut isCancel permet de voir si le billet est valide ou pas, par default il est true c'est-à-dire valider
+  iscancel   Boolean   @default(true)
+  datecancel DateTime?
+  create_at  DateTime  @default(now())
+  userId     String    @db.ObjectId
+  routeId    String    @db.ObjectId
+}
