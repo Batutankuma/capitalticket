@@ -26,7 +26,7 @@ class Controller {
 
     async findById({ params }, res) {
         try {
-            let result = await model.user.findFirst({ where: { id: params.id } });
+            let result = await model.utilisateurs.findFirst({ where: { id: params.id } });
             return res.status(201).json({ data: result });
         } catch (error) {
             res.status(401).json(error.message);
@@ -35,7 +35,7 @@ class Controller {
 
     async updateById({ params, body }, res) {
         try {
-            await model.user.update({ where: { id: params.id }, data: body });
+            await model.utilisateurs.update({ where: { id: params.id }, data: body });
             res.status(201).json({ message: "la modification est effectuée avec succes" });
         } catch (error) {
             console.log(error);
@@ -45,7 +45,7 @@ class Controller {
 
     async deleteById({ params }, res) {
         try {
-            await model.user.delete({ where: { id: params.id } });
+            await model.utilisateurs.delete({ where: { id: params.id } });
             return res.status(201).json({ message: "la suppresion est effectuée avec succes" });
         } catch (error) {
             res.status(401).json(error.message);

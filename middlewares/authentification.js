@@ -17,12 +17,12 @@ class Authentification {
             //verification si l'adresse email est valide
             if (!validate(email)) throw new Error("Votre Adresse Email est invalide !");
 
-            const userExist = await model.user.findFirst({ where: { email: email } });
+            const userExist = await model.utilisateurs.findFirst({ where: { email: email } });
             //si l'utilisateur n'existe pas il renvoi ce message
             if (!userExist) throw new Error("Désolé Email ou Mot de Passe est incorrect!");
             const isValidePwd = compareSync(password, userExist.password);
             if (!isValidePwd) throw new Error("Désolé votre mot de pass ou password est incorrect!");
-            let result = { key: sign({ userExist }, process.env.SECRET_KEY, { expiresIn: "24h" }),id_user: userExist.id};
+            let result = { key: sign({ userExist }, process.env.SECRET_KEY, { expiresIn: "24h" }), id_user: userExist.id };
             return result;
         } catch (error) {
             throw error;
@@ -41,16 +41,15 @@ class Authentification {
             //verification si l'adresse email est valide
             if (!validate(body.email)) throw new Error("Votre Adresse Email est invalide !");
 
-            const emailExiste = await model.user.findFirst({ where: { email: body.email } });
+            const emailExiste = await model.utilisateurs.findFirst({ where: { email: body.email } });
             if (emailExiste) throw new Error("cette adresse email existe deja !");
             if (!pwd) throw err;
             //et password 
             const datas = { ...body, password: pwd };
-            const user = await model.user.create({ data: datas });
-            let result = { key: sign({ user }, process.env.SECRET_KEY, { expiresIn: "24h" }),id_user: user.id };
+            const user = await model.utilisateurs.create({ data: datas });
+            let result = { key: sign({ user }, process.env.SECRET_KEY, { expiresIn: "24h" }), id_user: user.id };
             return result;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }

@@ -11,42 +11,43 @@ datasource db {
 }
 
 //Utilisateurs
-model User {
-  id        String   @id @default(uuid()) @map("_id")
+model Utilisateurs {
+  id        String    @id @default(uuid()) @map("_id")
   fullname  String
   //l'attribut avatar est optionnelle, l'utilisateur peut mette ou pas sa photo de profil
-  email     String   @unique
+  email     String    @unique
   password  String
-  create_at DateTime @default(now())
-  update_at DateTime @updatedAt
-  Ticker    Ticker[]
+  create_at DateTime  @default(now())
+  update_at DateTime  @updatedAt
+  Billets   Billets[]
 }
 
 //Trajet
-model Route {
-  id            String   @id @default(uuid()) @map("_id")
-  departure     String
-  arrived       String
-  datedeparture DateTime
-  datearrived   DateTime
+model Trajets {
+  id         String    @id @default(uuid()) @map("_id")
+  departure  String
+  arrive     String
+  datedepart DateTime
+  datearrive DateTime
+  position   Json?
   //le status permet de voir si le trajet est toujours disponible par defaut c'est true pour dire que la route est disponible
-  status        Boolean  @default(true)
+  status     Boolean   @default(true)
   //ici nous determinons le nombre de siege par rapport à un trajet
-  seat          Int
-  create_at     DateTime @default(now())
-  update_at     DateTime @updatedAt
-  Ticker        Ticker[]
+  siege      Int
+  create_at  DateTime  @default(now())
+  update_at  DateTime  @updatedAt
+  Billets    Billets[]
 }
 
 //Billet
-model Ticker {
-  id         String    @id @default(uuid()) @map("_id")
-  user       User      @relation(fields: [userId], references: [id])
-  router     Route     @relation(fields: [routeId], references: [id])
+model Billets {
+  id             String       @id @default(uuid()) @map("_id")
+  utilisateur    Utilisateurs @relation(fields: [utilisateursId], references: [id])
+  trajet         Trajets      @relation(fields: [trajetsId], references: [id])
   //l'attibut isCancel permet de voir si le billet est valide ou pas, par default il est true c'est-à-dire valider
-  iscancel   Boolean   @default(true)
-  datecancel DateTime?
-  create_at  DateTime  @default(now())
-  userId     String
-  routeId    String
+  iscancel       Boolean      @default(true)
+  datecancel     DateTime?
+  create_at      DateTime     @default(now())
+  utilisateursId String
+  trajetsId      String
 }

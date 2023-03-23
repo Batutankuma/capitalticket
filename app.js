@@ -7,6 +7,7 @@ const { PrismaClient } = require('@prisma/client');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const trajetRouter = require('./routes/trajet');
 
 const app = express();
 const prisma = new PrismaClient();
@@ -30,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api/v1', usersRouter);
+app.use('/api/v1', usersRouter,trajetRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
