@@ -1,7 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
 const moment = require('moment');
-const sendMailer = require("./../middlewares/mail_notification");
+const sendMailer = require("./../middlewares/mail");
 let { trajets, billets, utilisateurs } = new PrismaClient();
+
+
 
 
 class Controller {
