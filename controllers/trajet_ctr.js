@@ -1,11 +1,16 @@
 const { PrismaClient } = require('@prisma/client');
+const { formatDate } = require('./../middlewares/functions')
 const model = new PrismaClient();
 
 class Controller {
 
     async create({ body }, res) {
         try {
-            let result = await model.trajets.create({ data: body });
+            //la destruction de l'attributs de l'objet pour le formatage
+            let {datedepart,datearrive,...info} = body;
+            //la restitution de l'objet apres le formatage
+            let data = { datedepart: formatDate(body.datedepart), datearrive: formatDate(body.datearrive), ...info};
+            let result = await model.trajets.create({ data: data });
             res.status(201).json({ message: "l'enregistrement est effectuée avec succes", data: result });
         } catch (error) {
             res.status(400).json(error.message);

@@ -25,7 +25,7 @@ model Utilisateurs {
 //Trajet
 model Trajets {
   id         String    @id @default(uuid()) @map("_id")
-  departure  String
+  depart     String
   arrive     String
   datedepart DateTime
   datearrive DateTime
