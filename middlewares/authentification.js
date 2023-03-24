@@ -23,7 +23,7 @@ class Authentification {
             const isValidePwd = compareSync(password, userExist.password);
             if (!isValidePwd) throw new Error("Désolé votre mot de pass ou password est incorrect!");
             let result = { key: sign({ userExist }, process.env.SECRET_KEY, { expiresIn: "1d" }), id_user: userExist.id };
-            return new Promise.resolve(result);
+            return Promise.resolve(result);
         } catch (error) {
             throw error;
         }
@@ -48,7 +48,7 @@ class Authentification {
             const datas = { ...body, password: pwd };
             const user = await model.utilisateurs.create({ data: datas });
             let result = { key: sign({ user }, process.env.SECRET_KEY, { expiresIn: "24h" }), id_user: user.id };
-            return new Promise.resolve(result);
+            return Promise.resolve(result);
         } catch (error) {
             throw error;
         }

@@ -10,9 +10,9 @@ class Controller {
     async creation({ body }, res) {
         try {
             //recupération du trajet par rapport à la reservation
-            let trajetModel = await trajets.findFirst({ where: { id: body.trajetId } });
+            let trajetModel = await trajets.findUnique({ where: { id: body.trajetsId } });
             //recuperation des toutes les informations de l'utilisateur en fonction de son id
-            let userModel = await utilisateurs.findFirst({ where: { id: body.userId } });
+            let userModel = await utilisateurs.findUnique({ where: { id: body.utilisateursId } });
             //si le nombre de siege à confirmer est superieur au notre siege de trajet
             if (body.siege > trajetModel.siege) throw new Error(`Désolé, nous ne pourons pas effectuer cette opération car le nombre de servation est superieur au nombre siege restant ${trajetModel.siege}`);
             //calculer le nombre de siege restant 
@@ -20,9 +20,9 @@ class Controller {
             //le nombre de siege est 0 nous changons le status de trajet en false pour cloturé la reservation
             if (siegeRestant == 0) await trajets.update({ where: { id: trajetModel.id }, data: { status: false } });
             //si non nous reduisons le nombre de siege du trajet par le nombre siege de reservation
-            trajets.update({ where: { id: trajetModel.id }, data: { siege: siegeRestant } });
+            await trajets.update({ where: { id: trajetModel.id }, data: { siege: siegeRestant } });
             //enregistrement de la nouvelle reservation et conversion de data String vers ObjectId pour UserId et TrajetId 
-            let dataSave = billets.create({ data: body, include: { trajet: true, utilisateur: true } });
+            let dataSave = await billets.create({ data: body});
             //le message envoyer au client par mail
             let message = `Merci ${userModel.fullname}, votre reservation est effectuée avec success`;
             await sendMailer(userModel.email, "confirmation de reservation", message);
