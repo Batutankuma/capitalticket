@@ -10,7 +10,7 @@ class Authentification {
      * C'est une methode qui permet à l'utilisateur de se connecter dans l'application
      * @param {string} email 
      * @param {string} password 
-     * @returns {string} Json Web Token
+     * @returns {Promise} Json Web Token
      */
     async localSignIn(email, password) {
         try {
@@ -23,7 +23,7 @@ class Authentification {
             const isValidePwd = compareSync(password, userExist.password);
             if (!isValidePwd) throw new Error("Désolé votre mot de pass ou password est incorrect!");
             let result = { key: sign({ userExist }, process.env.SECRET_KEY, { expiresIn: "1d" }), id_user: userExist.id };
-            return result;
+            return new Promise.resolve(result);
         } catch (error) {
             throw error;
         }
@@ -32,7 +32,7 @@ class Authentification {
     /**
      * C'est une methode qui permet à l'utilisateur de s'inscrirer dans l'application
      * @param {()} body 
-     * @returns {string} de Json Web Token
+     * @returns {Promise} de Json Web Token
      */
     async localSignUp(body) {
         try {
@@ -48,7 +48,7 @@ class Authentification {
             const datas = { ...body, password: pwd };
             const user = await model.utilisateurs.create({ data: datas });
             let result = { key: sign({ user }, process.env.SECRET_KEY, { expiresIn: "24h" }), id_user: user.id };
-            return result;
+            return new Promise.resolve(result);
         } catch (error) {
             throw error;
         }

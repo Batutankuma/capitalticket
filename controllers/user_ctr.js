@@ -10,14 +10,13 @@ class Controller {
             let result = await localSignUp(body);
             return res.status(200).json(result);
         } catch (error) {
-            console.log(error);
             res.status(400).json(error.message);
         }
     }
 
     async signIn({ body }, res) {
         try {
-            let result = await localSignIn(body.email, body.password)
+            let result = await localSignIn(body.email, body.password);
             return res.status(200).json(result);
         } catch (error) {
             res.status(400).json(error.message);
@@ -38,7 +37,6 @@ class Controller {
             await model.utilisateurs.update({ where: { id: params.id }, data: body });
             res.status(201).json({ message: "la modification est effectuée avec succes" });
         } catch (error) {
-            console.log(error);
             res.status(401).json(error.message);
         }
     }
