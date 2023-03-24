@@ -41,23 +41,13 @@ model Trajets {
 
 //Billet
 model Billets {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  utilisateur    Utilisateurs  @relation(fields: [utilisateursId], references: [id])
-  trajet         Trajets       @relation(fields: [trajetsId], references: [id])
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  utilisateur    Utilisateurs @relation(fields: [utilisateursId], references: [id])
+  trajet         Trajets      @relation(fields: [trajetsId], references: [id])
   //l'attibut isCancel permet de voir si le billet est valide ou pas, par default il est true c'est-à-dire valider
-  iscancel       Boolean       @default(false)
+  iscancel       Boolean      @default(false)
   datecancel     DateTime?
-  create_at      DateTime      @default(now())
-  utilisateursId String        @db.ObjectId
-  trajetsId      String        @db.ObjectId
-  StoryTicker    StoryTicker[]
-}
-
-//historique de chaque billet annuler
-model StoryTicker {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  billet     Billets   @relation(fields: [billetsId], references: [id])
-  datecancel DateTime? @default(now())
-  siege      Int
-  billetsId  String    @db.ObjectId
+  create_at      DateTime     @default(now())
+  utilisateursId String       @db.ObjectId
+  trajetsId      String       @db.ObjectId
 }
