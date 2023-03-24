@@ -7,9 +7,9 @@ class Controller {
     async create({ body }, res) {
         try {
             //la destruction de l'attributs de l'objet pour le formatage
-            let {datedepart,datearrive,...info} = body;
+            let { datedepart, datearrive, ...info } = body;
             //la restitution de l'objet apres le formatage
-            let data = { datedepart: formatDate(body.datedepart), datearrive: formatDate(body.datearrive), ...info};
+            let data = { datedepart: formatDate(body.datedepart), datearrive: formatDate(body.datearrive), ...info };
             let result = await model.trajets.create({ data: data });
             res.status(201).json({ message: "l'enregistrement est effectuée avec succes", data: result });
         } catch (error) {
@@ -37,6 +37,7 @@ class Controller {
 
     async deleteById({ params }, res) {
         try {
+            if ((await model.billets.findFirst({ where: { trajetsId: params.id } })).id != undefined) throw new Error("Vous ne pouvez pas effectuer cette opération, car le trajet actuel est déjà utilisé réservé dans un billet!");
             let result = await model.trajets.delete({ where: { id: params.id } });
             return res.status(201).json({ message: "la suppresion est effectuée avec succes", data: result.id });
         } catch (error) {
