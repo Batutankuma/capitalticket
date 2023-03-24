@@ -6,13 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 //Utilisateurs
 model Utilisateurs {
-  id        String    @id @default(uuid()) @map("_id")
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   fullname  String
   //l'attribut avatar est optionnelle, l'utilisateur peut mette ou pas sa photo de profil
   email     String    @unique
@@ -24,7 +24,7 @@ model Utilisateurs {
 
 //Trajet
 model Trajets {
-  id         String    @id @default(uuid()) @map("_id")
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   depart     String
   arrive     String
   datedepart DateTime
@@ -41,13 +41,13 @@ model Trajets {
 
 //Billet
 model Billets {
-  id             String       @id @default(uuid()) @map("_id")
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
   utilisateur    Utilisateurs @relation(fields: [utilisateursId], references: [id])
   trajet         Trajets      @relation(fields: [trajetsId], references: [id])
   //l'attibut isCancel permet de voir si le billet est valide ou pas, par default il est true c'est-à-dire valider
   iscancel       Boolean      @default(false)
   datecancel     DateTime?
   create_at      DateTime     @default(now())
-  utilisateursId String
-  trajetsId      String
+  utilisateursId String       @db.ObjectId
+  trajetsId      String       @db.ObjectId
 }
