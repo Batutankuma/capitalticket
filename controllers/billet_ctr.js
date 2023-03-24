@@ -52,13 +52,13 @@ class Controller {
 
     async annulationBillet({ params }, res) {
         try {
-            let reservation = await billets.findUnique({ where: { id: params.id } });
+            let billetModel = await billets.findUnique({ where: { id: params.id } });
             //verification si le billet est déjà annuler
-            if (reservation.iscancel) throw new Error('Désolé le billet est déjà annulé');
-            let userModel = await utilisateurs.findUnique({ where: { id: reservation.utilisateursId } });
+            if (billetModel.iscancel) throw new Error('Désolé le billet est déjà annulé');
+            let userModel = await utilisateurs.findUnique({ where: { id: billetModel.utilisateursId } });
             //la recupation de la date du jour de systeme pour la validation de l'annulation de billet
             let dateToDay = new Date(moment(Date.now()).format("YYYY-MM-DD"));
-            let trajetInfo = await trajets.findUnique({ where: { id: reservation.id } });
+            let trajetInfo = await trajets.findUnique({ where: { id: billetModel.trajetsId } });
             //la recuperation de la date du depart 
             let dateDepart = new Date(moment(trajetInfo.datedepart).format("YYYY-MM-DD"));
             //verification si la date du jour et egale ou superieur à la date du depart
