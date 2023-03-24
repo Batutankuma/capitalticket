@@ -49,7 +49,7 @@ class Controller {
     async listDispoTrajet(req, res) {
         try {
             let result = await model.trajets.findMany({ where: { status: true } });
-            if (result.length == 0) throw new Error("Désolé, il y a plus de disponible pour ce billet, toutes les places sont réservé");
+            if (result.length == 0) throw new Error("Désolé, il y a plus des billets disponible pour ce trajet, toutes les places sont réservé");
             return res.status(201).json({ message: "la liste de trajet disponible", data: result });
         } catch (error) {
             res.status(401).json(error.message);
